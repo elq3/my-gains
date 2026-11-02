@@ -1,0 +1,155 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#101a19"><title>My Gains — V0.1</title><style>
+:root{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#eaf3ee;background:#101a19}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}header{padding:25px 20px 12px;max-width:760px;margin:auto}header small{color:#86b8a3;letter-spacing:.16em;font-weight:750}h1{font-size:36px;margin:5px 0 6px}p{color:#a7bbb1;margin:0 0 13px}.shell{max-width:760px;margin:auto;padding:0 16px 100px}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;position:sticky;top:0;padding:9px 0;background:#101a19;z-index:3}.tabs button{border:1px solid #354841;border-radius:12px;background:#1b2b27;color:#b6cac0;padding:12px 4px;font-size:13px}.tabs button.active{background:#b6e6c9;color:#13261e;font-weight:800}.panel{display:none}.panel.active{display:block}.card{background:#1a2925;border:1px solid #34493f;border-radius:20px;padding:18px;margin:12px 0}.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#97b8a8;font-weight:700}.hero{display:flex;align-items:baseline;justify-content:space-between;gap:10px}.hero strong{font-size:32px}.muted{color:#9eafa6}.meter{background:#374a41;border-radius:12px;height:9px;overflow:hidden;margin:8px 0 15px}.meter span{display:block;background:#b3e7bf;height:100%;border-radius:12px;max-width:100%}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.stat{background:#253a32;padding:12px;border-radius:12px}.stat strong{display:block;font-size:21px;margin-top:4px}.stat small{color:#b0c6b7}.btn{background:#b6e6c9;color:#12261c;border:0;border-radius:11px;padding:11px 14px;font-weight:750}.btn.secondary{background:#334b40;color:#e9f6ef}.btn.danger{background:#563333;color:#ffe4e4}.actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}h2{font-size:19px;margin:0 0 13px}h3{font-size:16px;margin:14px 0 8px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.field{display:flex;flex-direction:column;gap:5px;margin:7px 0}.field label{font-size:12px;color:#aec3b6}input,select{border:1px solid #496052;background:#12211c;color:#eef6ef;border-radius:10px;padding:11px;min-width:0;width:100%}input[type=date]{color-scheme:dark}.item{border-top:1px solid #365046;padding:11px 0;display:flex;justify-content:space-between;align-items:center;gap:8px}.item:first-child{border-top:0}.item strong{font-size:14px}.item small{color:#a8bdaf;display:block;margin-top:4px}.item button{background:#3a4e43;color:#f0f5ee;border:0;padding:7px 9px;border-radius:8px}.help{font-size:12px;color:#9cafa3;line-height:1.5}details{margin:10px 0}summary{cursor:pointer;font-weight:700;padding:7px 0}.note{font-size:12px;color:#c8d8cd;background:#2a3d31;padding:10px;border-radius:9px;margin:10px 0}.badge{display:inline-block;border-radius:20px;background:#345a42;padding:4px 8px;font-size:11px;color:#d4efda}footer{text-align:center;color:#91a59a;font-size:12px;padding:10px 0}@media(max-width:380px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
+</style></head><body><header><small>YOUR TRAINING SYSTEM</small><h1>My Gains <span style="font-size:15px;color:#a9c6b7">V0.2.1</span></h1><p>Consistency first. Progress follows.</p></header><div class="shell"><nav class="tabs"><button class="active" data-tab="today">Today</button><button data-tab="food">Scran</button><button data-tab="gym">Gym</button><button data-tab="progress">Progress</button></nav>
+<section class="panel active" id="today"><div class="card"><div class="hero"><div><div class="eyebrow">Daily fuel</div><strong id="calHeadline">0 kcal</strong></div><div class="muted" id="dateLabel"></div></div><div class="meter"><span id="calBar"></span></div><div class="stats" id="macroStats"></div><div class="actions"><button class="btn" onclick="showTab('food')">+ Log food</button><button class="btn secondary" onclick="showTab('gym')">Log workout</button></div></div><div class="card"><h2>View a day</h2><div class="field"><label>Date</label><input type="date" id="dashboardDate"></div></div><div class="card"><h2>Meals logged</h2><div id="todayMeals"></div></div><div class="card"><h2>Today's reminder</h2><p>Starting target: 2,700 kcal and 130 g protein. These are provisional until your weight trend gives us better information.</p><p class="help">Restaurant meals and food photos are not calculated automatically in V0. Add an estimate and adjust it later.</p></div></section>
+<section class="panel" id="food"><div class="card"><h2>Add food or meal</h2><form id="foodForm"><div class="field"><label>Food name</label><input id="foodName" required placeholder="Salmon ikura chirashi"></div><div class="grid"><div class="field"><label>Calories (kcal)</label><input id="foodCal" type="number" min="0" step="1" required></div><div class="field"><label>Protein (g)</label><input id="foodP" type="number" min="0" step="0.1" required></div><div class="field"><label>Carbs (g)</label><input id="foodC" type="number" min="0" step="0.1" required></div><div class="field"><label>Fat (g)</label><input id="foodF" type="number" min="0" step="0.1" required></div><div class="field"><label>Fibre (g, optional)</label><input id="foodFiber" type="number" min="0" step="0.1" value="0"></div><div class="field"><label>Date</label><input id="foodDate" type="date" required></div></div><div class="actions"><button class="btn" type="submit">Add to day</button><button class="btn secondary" type="button" onclick="saveRecipeFromForm()">Save as recipe</button></div></form></div><div class="card"><h2>Saved recipes <span class="badge">quick add</span></h2><div id="recipes"></div><div id="recipeDetails"></div><p class="help">Choose a recipe to log it, or open its full ingredients and cooking instructions. Nutrition estimates are editable.</p></div><div class="card"><h2>Selected-day log</h2><div id="foodHistory"></div></div></section>
+<section class="panel" id="gym"><div class="card"><h2>Record a set</h2><form id="gymForm"><div class="grid"><div class="field"><label>Workout</label><select id="workout"><option>Push</option><option>Pull</option><option>Legs</option><option>Push + Pull + Abs</option><option>Pull + Legs + Abs</option><option>Push + Legs + Abs</option><option>Home</option></select></div><div class="field"><label>Date</label><input id="gymDate" type="date" required></div></div><div class="field"><label>Exercise</label><input id="exercise" list="exerciseOptions" required placeholder="Pull-ups"><datalist id="exerciseOptions"><option value="Pull-ups"><option value="Dumbbell rows"><option value="Face pulls"><option value="Incline bicep curls"><option value="Dips"><option value="Incline chest press machine"><option value="Shoulder press machine"><option value="Cable crossovers"><option value="Leg press"><option value="Lunges"><option value="Leg curls"><option value="Calf raises"><option value="Russian twists"></datalist></div><div class="grid"><div class="field"><label>Weight (lbs; 0 = bodyweight)</label><input id="weight" type="number" min="0" step="0.5" value="0" required></div><div class="field"><label>Reps</label><input id="reps" type="number" min="1" step="1" value="8" required></div></div><div id="lastPerformance" class="note">Enter an exercise to view your latest set.</div><button class="btn" type="submit">Save set</button></form></div><div class="card"><h2>Workout plan <span class="badge">quick start</span></h2><p class="help">Select a session to see suggested exercises. Your Monday session is Push + Pull + Abs. Log each set above; the app remembers your previous performance.</p><div class="actions" id="planButtons"></div><div id="planExercises"></div></div><div class="card"><h2>Recent workout sets</h2><div id="gymHistory"></div></div></section>
+<section class="panel" id="progress"><div class="card"><h2>Daily steps</h2><form id="stepsForm"><div class="grid"><div class="field"><label>Date</label><input id="stepsDate" type="date" required></div><div class="field"><label>Steps</label><input id="stepsCount" type="number" min="0" max="100000" step="1" required></div></div><button class="btn" type="submit">Save steps</button></form><div id="stepsHistory"></div></div><div class="card"><h2>Body weight</h2><form id="weightForm"><div class="grid"><div class="field"><label>Date</label><input id="weightDate" type="date" required></div><div class="field"><label>Weight (kg)</label><input id="bodyWeight" type="number" min="20" max="350" step="0.1" placeholder="65.0" required></div></div><button class="btn" type="submit">Save weigh-in</button></form><div id="weightHistory"></div></div><div class="card"><h2>Nutrition targets</h2><form id="targetForm"><div class="grid"><div class="field"><label>Calories</label><input id="targetCal" type="number" min="1000" max="10000" required></div><div class="field"><label>Protein (g)</label><input id="targetProtein" type="number" min="0" required></div><div class="field"><label>Carbs (g)</label><input id="targetCarbs" type="number" min="0" required></div><div class="field"><label>Fat (g)</label><input id="targetFat" type="number" min="0" required></div><div class="field"><label>Fibre (g)</label><input id="targetFiber" type="number" min="0" required></div></div><button class="btn" type="submit">Update targets</button></form></div><div class="card"><h2>Back up your data</h2><p class="help">Data lives only in this browser on this device. Export regularly, especially before clearing browser data. Opening the app on another device won't sync automatically.</p><div class="actions"><button class="btn" onclick="exportData()">Export JSON backup</button><label class="btn secondary" style="cursor:pointer">Import backup<input type="file" id="importFile" accept="application/json,.json" hidden></label></div></div></section><footer>My Gains V0.2.1 · Private local storage · No account · No AI API</footer></div>
+<script>
+const KEY='my-gains-v0-data'; const base={targets:{cal:2700,p:130,c:365,f:80,fiber:34},foods:[],sets:[],weights:[],recipes:[],steps:[]};
+let data;try{data={...base,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){data=structuredClone(base)}
+// Non-destructive starter-data migration: existing local logs and recipes remain intact.
+function addStarterData(){
+ if(localStorage.getItem('my-gains-v0.1-seeded')==='yes')return;
+ const presets=[
+  {name:'Chocolate PB&J protein oats (plain)',cal:480,p:44,c:55,f:10,fiber:6,detail:'Per 1 of 3 portions. Batch: 1.5 cups rolled oats, 2 cups unsweetened vanilla almond milk, 1.5 cups Chobani vanilla Greek yogurt, 3 scoops ON chocolate whey, 3 tbsp strawberry jam, ~1 tbsp peanut butter total, cinnamon and salt. No berry/peanut topping. Estimated values.'},
+  {name:'Chocolate PB&J protein oats + berries',cal:515,p:44.5,c:63,f:10,fiber:10,detail:'One base oats portion + 0.5 cup frozen berries. Estimated values.'},
+  {name:'Chocolate PB&J protein oats + berries + peanuts',cal:565,p:46.5,c:65,f:14.5,fiber:11,detail:'One base oats portion + 0.5 cup frozen berries + 1 tbsp crushed peanuts. Estimated values.'},
+  {name:'Salmon Ikura Chirashi (restaurant estimate)',cal:800,p:40,c:88,f:32,fiber:2,detail:'Estimate only; rice bowl with salmon toro, ikura, shiso, panko, nori and sauces. Plausible range ~650–1000 kcal. Actual portions, fatty fish and sauces change numbers.'}
+ ];
+ for(const r of presets){if(!data.recipes.some(x=>x.name===r.name))data.recipes.push({id:crypto.randomUUID(),...r})}
+ const day='2026-10-29';
+ const meal=[['Chocolate PB&J protein oats (plain)','Breakfast'],['Salmon Ikura Chirashi (restaurant estimate)','Lunch']];
+ // Log only if nothing matching has already been entered; preserve all existing logs.
+ for(const [name,mealType] of meal){const r=presets.find(x=>x.name===name);
+  if(!data.foods.some(x=>x.date===day && (x.name===name || (mealType==='Lunch'&&/chirashi|ikura/i.test(x.name)) || (mealType==='Breakfast'&&/overnight oats|pb&j protein oats/i.test(x.name)))))data.foods.push({id:crypto.randomUUID(),...r,date:day,name:r.name,mealType});
+ }
+ localStorage.setItem(KEY,JSON.stringify(data));
+ localStorage.setItem('my-gains-v0.1-seeded','yes');
+}
+// Do not insert historical meals automatically on new installs.
+const $=id=>document.getElementById(id),num=id=>Number($(id).value)||0,esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const localDay=()=>{let d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+function persist(){localStorage.setItem(KEY,JSON.stringify(data));render();renderV2()}
+function showTab(name){document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===name));document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab===name));window.scrollTo({top:0,behavior:'smooth'})}document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+function totals(day){return data.foods.filter(x=>x.date===day).reduce((a,x)=>({cal:a.cal+x.cal,p:a.p+x.p,c:a.c+x.c,f:a.f+x.f,fiber:a.fiber+x.fiber}),{cal:0,p:0,c:0,f:0,fiber:0})}
+function item(text,sub,action){let e=document.createElement('div');e.className='item';let a=document.createElement('div');let s=document.createElement('strong');s.textContent=text;let n=document.createElement('small');n.textContent=sub;a.append(s,n);e.append(a);if(action){let b=document.createElement('button');b.textContent='Remove';b.onclick=action;e.append(b)}return e}
+function fillItems(id,arr,empty){let el=$(id);el.replaceChildren();if(!arr.length){el.textContent=empty;el.className='muted';return}el.className='';arr.forEach(x=>el.append(x))}
+function render(){let day=$('dashboardDate').value||localDay(),t=totals(day),goal=data.targets;$('dateLabel').textContent=day;$('calHeadline').textContent=`${Math.round(t.cal).toLocaleString()} kcal`;$('calBar').style.width=`${Math.min(100,100*t.cal/goal.cal)}%`;$('macroStats').innerHTML=[['Protein',t.p,goal.p],['Carbs',t.c,goal.c],['Fat',t.f,goal.f],['Fibre',t.fiber,goal.fiber]].map(([name,val,max])=>`<div class="stat"><small>${name}</small><strong>${Math.round(val)}g</strong><small>of ${max}g</small></div>`).join('');fillItems('todayMeals',data.foods.filter(x=>x.date===day).slice().reverse().map(x=>item(x.name,`${Math.round(x.cal)} kcal · ${x.p}g protein`,()=>remove('foods',x.id))),'Nothing logged yet.');let selected=$('foodDate').value||day;fillItems('foodHistory',data.foods.filter(x=>x.date===selected).slice().reverse().map(x=>item(x.name,`${Math.round(x.cal)} kcal · P ${x.p}g · C ${x.c}g · F ${x.f}g`,()=>remove('foods',x.id))),'No meals for this date.');fillItems('recipes',data.recipes.map(x=>{let el=document.createElement('div');el.className='item';let inner=document.createElement('div');let st=document.createElement('strong');st.textContent=x.name;let sub=document.createElement('small');sub.textContent=`${x.cal} kcal · P ${x.p}g · C ${x.c}g · F ${x.f}g`+(x.detail?` · ${x.detail}`:``);inner.append(st,sub);let buttons=document.createElement('div');buttons.className='actions';buttons.style.alignItems='center';
+ let edit=document.createElement('button');edit.className='btn secondary';edit.textContent='Edit / use';edit.onclick=()=>{['foodName','foodCal','foodP','foodC','foodF','foodFiber'].forEach((id,i)=>$(id).value=[x.name,x.cal,x.p,x.c,x.f,x.fiber||0][i]);showTab('food');window.scrollTo({top:0,behavior:'smooth'});};let add=document.createElement('button');add.className='btn';add.textContent='Add';add.onclick=()=>{data.foods.push({...x,id:crypto.randomUUID(),date:$('foodDate').value||localDay()});persist()};let del=document.createElement('button');del.className='btn secondary';del.textContent='×';del.title='Delete recipe';del.onclick=()=>remove('recipes',x.id);buttons.append(add,edit,del);el.append(inner,buttons);return el}),'No saved recipes yet.');fillItems('gymHistory',data.sets.slice().reverse().slice(0,30).map(x=>item(`${x.exercise} · ${x.weight} lb × ${x.reps}`,`${x.date} · ${x.workout}`,()=>remove('sets',x.id))),'No sets logged yet.');fillItems('weightHistory',data.weights.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(x=>item(`${x.weight} kg`,x.date,()=>remove('weights',x.id))),'No weigh-ins yet.');[['Cal','cal'],['Protein','p'],['Carbs','c'],['Fat','f'],['Fiber','fiber']].forEach(([k,v])=>{let el=$('target'+k);if(document.activeElement!==el)el.value=goal[v]});last();}
+function remove(kind,id){data[kind]=data[kind].filter(x=>x.id!==id);persist()}
+$('foodForm').onsubmit=e=>{e.preventDefault();data.foods.push({id:crypto.randomUUID(),name:$('foodName').value.trim(),cal:num('foodCal'),p:num('foodP'),c:num('foodC'),f:num('foodF'),fiber:num('foodFiber'),date:$('foodDate').value});$('foodName').value='';persist()};
+function saveRecipeFromForm(){if(!$('foodName').value.trim()||!$('foodCal').value){alert('Enter a recipe name and nutrition values first.');return}data.recipes.push({id:crypto.randomUUID(),name:$('foodName').value.trim(),cal:num('foodCal'),p:num('foodP'),c:num('foodC'),f:num('foodF'),fiber:num('foodFiber')});persist()}
+$('foodDate').onchange=render;
+function last(){let name=$('exercise').value.trim().toLowerCase();let previous=data.sets.slice().reverse().find(x=>x.exercise.toLowerCase()===name);$('lastPerformance').textContent=previous?`Previous: ${previous.date} — ${previous.weight} lb × ${previous.reps} reps`:'No previous performance recorded.'} $('exercise').oninput=last;
+$('gymForm').onsubmit=e=>{e.preventDefault();data.sets.push({id:crypto.randomUUID(),date:$('gymDate').value,workout:$('workout').value,exercise:$('exercise').value.trim(),weight:num('weight'),reps:num('reps')});persist()};
+$('weightForm').onsubmit=e=>{e.preventDefault();let date=$('weightDate').value;data.weights=data.weights.filter(x=>x.date!==date);data.weights.push({id:crypto.randomUUID(),date,weight:num('bodyWeight')});persist()};
+$('targetForm').onsubmit=e=>{e.preventDefault();data.targets={cal:num('targetCal'),p:num('targetProtein'),c:num('targetCarbs'),f:num('targetFat'),fiber:num('targetFiber')};persist()};
+function exportData(){let blob=new Blob([JSON.stringify({version:1,exported:new Date().toISOString(),data},null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`my-gains-backup-${localDay()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+$('importFile').onchange=async e=>{let file=e.target.files[0];if(!file)return;try{let v=JSON.parse(await file.text());if(!v.data||!Array.isArray(v.data.foods)||!Array.isArray(v.data.sets)||!Array.isArray(v.data.weights)||!Array.isArray(v.data.recipes)||!v.data.targets)throw Error('Invalid backup format');if(!confirm('Replace all existing app data with this backup?'))return;data=v.data;persist();alert('Backup imported.')}catch(err){alert('Could not import: '+err.message)}e.target.value=''};
+
+const V2_RECIPES=[
+{
+name:"High-protein PB&J overnight oats",servings:3,cal:660,p:51,c:69,f:20,fiber:9,cost:2.70,
+ingredients:[["Good & Gather rolled oats","1½ cups (120g)"],["Silk unsweetened vanilla almond milk","1½ cups"],["Chobani Greek yogurt","1½ cups"],["Optimum Nutrition whey","3 scoops"],["Peanut butter","3 tbsp (adjust if less used)"],["Strawberry fruit spread","3 tbsp"],["Frozen mixed berries","1½ cups"],["Cinnamon","¾ tsp"],["Salt","Small pinch"],["Crushed peanuts","3 tbsp"]],
+steps:["Mix almond milk and Greek yogurt in a large bowl.","Whisk in whey until smooth.","Stir in oats, peanut butter, strawberry spread, cinnamon and salt.","Divide evenly between 3 containers and top each with ½ cup berries.","Cover and refrigerate 6–8 hours or overnight.","Add 1 tbsp crushed peanuts to each just before eating."],
+note:"Macros assume all 3 tbsp peanut butter and toppings; change estimate for your actual batch."
+},
+{
+name:"Spicy tuna, sweetcorn & honey air-fried wrap",servings:6,cal:315,p:17,c:30,f:15,fiber:3,cost:1.15,
+ingredients:[["Canned tuna in water","2 cans, drained"],["Sweetcorn","1 can (~432g), drained"],["Mission flour tortillas","6"],["Mayonnaise","3½ tbsp"],["Lao Gan Ma spicy chili crisp","2½ tbsp"],["Honey","½ tbsp"],["Black pepper","½ tsp"],["Parmesan","2 tbsp, optional; included in estimate"],["Lime juice","½ lime, optional"],["Scallions","2, optional"],["Oil","Very light coating"]],
+steps:["Drain tuna thoroughly.","Heat sweetcorn and drain well to avoid soggy wraps.","Combine tuna, corn, mayo, chili crisp, honey and pepper; add optional Parmesan, lime and scallions.","Warm tortillas for 10–15 seconds.","Divide filling into 6 tortillas and roll tightly.","Lightly oil and air fry at 375°F (190°C) for 5–7 minutes, flipping halfway.","Rest for 1–2 minutes."],
+note:"Estimated nutrition includes Parmesan and a little oil."
+},
+{
+name:"Creamy chicken Alfredo, broccoli, peas & pasta",servings:6,cal:558,p:44,c:69,f:12,fiber:10,cost:4.40,
+ingredients:[["Good & Gather medium pasta shells","1 box (16 oz)"],["Healthy Choice Chicken & Broccoli Alfredo","8 frozen boxes"],["Good & Gather frozen peas","1 bag (12 oz)"],["Unsalted butter","1 tbsp"],["Grated Parmesan","~2 tbsp"],["Black pepper","To taste"],["Reserved pasta water","Up to 1 cup"],["Lao Gan Ma chili crisp","Optional: 1 tbsp per portion (+100 kcal, +1g protein, +1g carbs, +10g fat)"],["Pesto","Optional alternative, not included"]],
+steps:["Boil pasta in salted water about 11 minutes; reserve 1 cup pasta water.","Drain pasta and return to pot; stir in butter.","Microwave all 8 frozen Alfredo meals per package instructions until thoroughly hot.","Cook peas fully.","Combine pasta, Alfredo meals, sauce, peas, Parmesan and pepper.","Add reserved pasta water only if needed.","Divide into 6 portions.","Add optional chili crisp to individual servings."],
+note:"Base recipe excludes chili crisp. Refrigerate up to 3–4 days or freeze; reheat thoroughly."
+},
+{
+name:"Chocolate hazelnut, peanut butter & crunchy peanut sandwich",servings:1,cal:387,p:12,c:41,f:21,fiber:5,cost:0.75,
+ingredients:[["Sara Lee Honey Whole Wheat Bread","2 slices"],["Good & Gather chocolate hazelnut spread","1 tbsp"],["Good & Gather creamy peanut butter","1 tbsp"],["Crushed peanuts","1 tbsp"]],
+steps:["Lightly toast both bread slices.","Spread peanut butter on one slice.","Crush peanuts and sprinkle over peanut butter.","Spread hazelnut spread on the other slice.","Close sandwich and serve."],
+note:"Per sandwich; this is different from the older 2 tbsp hazelnut-spread estimate."
+}
+];
+const WORKOUT_PLANS={
+"Push + Pull + Abs":["Incline dumbbell press","Pull-ups","Dumbbell rows","Overhead dumbbell press","Face pulls","Incline bicep curls","Russian twists"],
+"Pull + Legs + Abs":["Pull-ups","Dumbbell rows","Face pulls","Leg press","Leg curls","Calf raises","Russian twists"],
+"Push + Legs + Abs":["Incline dumbbell press","Dips","Cable crossovers","Leg press","Lunges","Calf raises","Russian twists"],
+"Push":["Incline dumbbell press","Dips","Cable crossovers","Overhead dumbbell press","Russian twists"],
+"Pull":["Pull-ups","Dumbbell rows","Face pulls","Incline bicep curls","Russian twists"],
+"Legs":["Lunges","Leg curls","Leg press","Calf raises","Russian twists"]
+};
+function v2seed(){
+ if(!Array.isArray(data.steps))data.steps=[];
+ for(const r of V2_RECIPES){
+   if(!data.recipes.some(x=>x.name===r.name))data.recipes.push({id:crypto.randomUUID(),...r});
+   else {let old=data.recipes.find(x=>x.name===r.name);if(!old.ingredients)Object.assign(old,r)}
+ }
+ localStorage.setItem(KEY,JSON.stringify(data));
+}
+function v2btn(label,fn,cls='btn secondary'){let b=document.createElement('button');b.type='button';b.className=cls;b.textContent=label;b.onclick=fn;return b}
+function renderV2(){
+ const container=$('recipes');
+ container.replaceChildren();
+ for(const r of data.recipes){
+   let wrap=document.createElement('div');wrap.className='item';wrap.style.display='block';
+   let head=document.createElement('strong');head.textContent=r.name;wrap.append(head);
+   let sub=document.createElement('small');sub.textContent=`${r.cal} kcal · P ${r.p}g · C ${r.c}g · F ${r.f}g${r.servings?' · makes '+r.servings:''}`;wrap.append(sub);
+   let actions=document.createElement('div');actions.className='actions';
+   actions.append(v2btn('Log portion',()=>quickLog(r)),v2btn('Edit / use',()=>loadRecipe(r)));
+   if(r.ingredients)actions.append(v2btn('Recipe',()=>showRecipe(r)));
+   actions.append(v2btn('Remove',()=>{if(confirm('Remove this saved recipe?'))remove('recipes',r.id)}));
+   wrap.append(actions);container.append(wrap);
+ }
+ let plans=$('planButtons');plans.replaceChildren();
+ for(let name of ["Push + Pull + Abs","Pull + Legs + Abs","Push + Legs + Abs","Push","Pull","Legs"])plans.append(v2btn(name,()=>showPlan(name)));
+ const steps=(data.steps||[]).slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,10);
+ fillItems('stepsHistory',steps.map(x=>item(x.date,`${x.count.toLocaleString()} steps`,()=>remove('steps',x.id))),'No steps recorded.');
+}
+function quickLog(r){
+ let count=Number(prompt(`How many portions of "${r.name}"?`,'1'));
+ if(!Number.isFinite(count)||count<=0||count>50)return;
+ let date=$('foodDate').value||localDay();
+ data.foods.push({id:crypto.randomUUID(),name:`${r.name} × ${count}`,date,cal:Math.round(r.cal*count),p:+(r.p*count).toFixed(1),c:+(r.c*count).toFixed(1),f:+(r.f*count).toFixed(1),fiber:+((r.fiber||0)*count).toFixed(1)});
+ $('dashboardDate').value=date;persist();showTab('today');
+}
+function loadRecipe(r){
+ [['foodName',r.name],['foodCal',r.cal],['foodP',r.p],['foodC',r.c],['foodF',r.f],['foodFiber',r.fiber||0]].forEach(([id,v])=>$(id).value=v);
+ showTab('food');window.scrollTo({top:0,behavior:'smooth'});
+}
+function showRecipe(r){
+ const dest=$('recipeDetails');dest.replaceChildren();
+ let card=document.createElement('div');card.className='card';
+ let h=document.createElement('h2');h.textContent=r.name;card.append(h);
+ let p=document.createElement('p');p.textContent=`Makes ${r.servings} · per portion ${r.cal} kcal, ${r.p}g protein · estimated $${Number(r.cost||0).toFixed(2)}`;card.append(p);
+ let ih=document.createElement('h3');ih.textContent='Ingredients (full batch)';card.append(ih);
+ let ul=document.createElement('ul');r.ingredients.forEach(([name,amount])=>{let li=document.createElement('li');li.textContent=`${amount} — ${name}`;ul.append(li)});card.append(ul);
+ let sh=document.createElement('h3');sh.textContent='Instructions';card.append(sh);
+ let ol=document.createElement('ol');r.steps.forEach(step=>{let li=document.createElement('li');li.textContent=step;ol.append(li)});card.append(ol);
+ let note=document.createElement('p');note.className='help';note.textContent=r.note||'';card.append(note);
+ card.append(v2btn('Log this recipe',()=>quickLog(r),'btn'));
+ dest.append(card);dest.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function showPlan(name){
+ $('workout').value=name;
+ const area=$('planExercises');area.replaceChildren();
+ let h=document.createElement('p');h.textContent=`${name}: start with about 2 controlled sets per exercise, adjusting for soreness and recovery.`;area.append(h);
+ for(const exercise of WORKOUT_PLANS[name]){
+   let row=document.createElement('div');row.className='item';
+   let s=document.createElement('strong');s.textContent=exercise;row.append(s);
+   row.append(v2btn('Log set',()=>{$('exercise').value=exercise;last();$('exercise').scrollIntoView({behavior:'smooth',block:'center'})}));
+   area.append(row);
+ }
+}
+$('stepsForm').onsubmit=e=>{
+ e.preventDefault();let date=$('stepsDate').value;
+ data.steps=(data.steps||[]).filter(x=>x.date!==date);
+ data.steps.push({id:crypto.randomUUID(),date,count:num('stepsCount')});persist();
+};
+v2seed();renderV2();showPlan('Push + Pull + Abs');
+
+['foodDate','gymDate','weightDate','stepsDate','dashboardDate'].forEach(id=>$(id).value=localDay());$('dashboardDate').onchange=render;render();renderV2();
+</script></body></html>
